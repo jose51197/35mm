@@ -338,7 +338,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 isAdmin=true;
                 if(admin!=null){
                     Log.println(Log.DEBUG,"q",String.valueOf(admin.length()));
-                    return admin.length()==1;
+                    startActivity(new Intent(LoginActivity.this,AdminMain.class));
                 }
             }
             return false;

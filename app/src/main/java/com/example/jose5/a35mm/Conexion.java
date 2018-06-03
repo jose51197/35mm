@@ -49,27 +49,28 @@ public class Conexion {
         }
     }
 
-    public void AddMovie(String name, String description, String image, String year) throws IOException {
-        String link="https://proyectoreque.000webhostapp.com/connect/movie.php";
-        String data  = URLEncoder.encode("description", "UTF-8") + "=" +
-                URLEncoder.encode(description, "UTF-8");
-        data += "&" + URLEncoder.encode("name", "UTF-8") + "=" +
-                URLEncoder.encode(name, "UTF-8");
-        data += "&" + URLEncoder.encode("year", "UTF-8") + "=" +
-                URLEncoder.encode(year, "UTF-8");
-        data += "&" + URLEncoder.encode("url", "UTF-8") + "=" +
-                URLEncoder.encode(image, "UTF-8");
+    public boolean Insert(String query) {
+        query = query.replace(" ", "%20");
+        StringBuilder result = new StringBuilder();
+        try {
+            URL url = new URL("https://proyectoreque.000webhostapp.com/connect/insert.php?query=" + query);
+            Log.println(Log.DEBUG, "url", url.toString());
+            URLConnection conn = url.openConnection();
+            HttpURLConnection httpConn = (HttpURLConnection) conn;
+            httpConn.setAllowUserInteraction(false);
+            httpConn.setInstanceFollowRedirects(true);
+            httpConn.setRequestMethod("GET");
+            httpConn.connect();
 
-        URL reqURL = new URL(link); //the URL we will send the request to
-        HttpURLConnection connection = (HttpURLConnection) reqURL.openConnection();
-        String post = data;
-        connection.setRequestMethod("POST");
-        connection.setDoOutput(true);
-        connection.connect();
-        OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream()); //we will write our request data here
-        writer.write(post);
-        writer.flush();
-        writer.close();
+            InputStream is = httpConn.getInputStream();
+            is.toString();
+            queryResult = convertinputStreamToString(is);
+            return new JSONArray(queryResult);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static String convertinputStreamToString(InputStream ists) throws IOException {
