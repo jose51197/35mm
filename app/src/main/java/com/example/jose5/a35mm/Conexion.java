@@ -1,6 +1,5 @@
 package com.example.jose5.a35mm;
 
-import android.text.Editable;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -12,9 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -39,7 +36,6 @@ public class Conexion {
             httpConn.connect();
 
             InputStream is = httpConn.getInputStream();
-            is.toString();
             queryResult = convertinputStreamToString(is);
             return new JSONArray(queryResult);
 
@@ -49,11 +45,12 @@ public class Conexion {
         }
     }
 
-    public boolean Insert(String query) {
-        query = query.replace(" ", "%20");
+    public boolean Insert(String table,String columns, String values) {
         StringBuilder result = new StringBuilder();
         try {
-            URL url = new URL("https://proyectoreque.000webhostapp.com/connect/insert.php?query=" + query);
+            //digamos que 1,2,3 cambia a '+1+','+2+','+3+'
+            values="'"+values.replace(",","','")+"'";
+            URL url = new URL("https://proyectoreque.000webhostapp.com/connect/insert.php?table=" + table + "&columns="+columns +"&values="+values);
             Log.println(Log.DEBUG, "url", url.toString());
             URLConnection conn = url.openConnection();
             HttpURLConnection httpConn = (HttpURLConnection) conn;
@@ -61,15 +58,13 @@ public class Conexion {
             httpConn.setInstanceFollowRedirects(true);
             httpConn.setRequestMethod("GET");
             httpConn.connect();
-
             InputStream is = httpConn.getInputStream();
-            is.toString();
-            queryResult = convertinputStreamToString(is);
-            return new JSONArray(queryResult);
+            Log.println(Log.DEBUG,"insert",convertinputStreamToString(is));
+            return convertinputStreamToString(is).equals("inserted");
 
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
     }
 
