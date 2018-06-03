@@ -11,7 +11,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginEnd="2dp"
-        app:srcCompat="@drawable/log_out" />
+        android:src="@android:drawable/ic_menu_set_as" />
 
     <ImageButton
         android:id="@+id/imageButton10"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        app:srcCompat="@drawable/movies" />
+        android:src="@android:drawable/btn_star_big_off" />
 
     <ScrollView
         android:layout_width="match_parent"

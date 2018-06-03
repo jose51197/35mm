@@ -1,5 +1,6 @@
 package com.example.jose5.a35mm;
 
+import android.text.Editable;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -11,7 +12,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -44,6 +47,29 @@ public class Conexion {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public void AddMovie(String name, String description, String image, String year) throws IOException {
+        String link="https://proyectoreque.000webhostapp.com/connect/movie.php";
+        String data  = URLEncoder.encode("description", "UTF-8") + "=" +
+                URLEncoder.encode(description, "UTF-8");
+        data += "&" + URLEncoder.encode("name", "UTF-8") + "=" +
+                URLEncoder.encode(name, "UTF-8");
+        data += "&" + URLEncoder.encode("year", "UTF-8") + "=" +
+                URLEncoder.encode(year, "UTF-8");
+        data += "&" + URLEncoder.encode("url", "UTF-8") + "=" +
+                URLEncoder.encode(image, "UTF-8");
+
+        URL reqURL = new URL(link); //the URL we will send the request to
+        HttpURLConnection connection = (HttpURLConnection) reqURL.openConnection();
+        String post = data;
+        connection.setRequestMethod("POST");
+        connection.setDoOutput(true);
+        connection.connect();
+        OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream()); //we will write our request data here
+        writer.write(post);
+        writer.flush();
+        writer.close();
     }
 
     public static String convertinputStreamToString(InputStream ists) throws IOException {

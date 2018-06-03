@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/imageButton8"
-        app:srcCompat="@drawable/log_out" />
+        app:srcCompat="@android:drawable/ic_menu_set_as" />
 
     <ImageButton
         android:id="@+id/imageButton6"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@id/imageButton6"
-        app:srcCompat="@drawable/movies" />
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <ImageButton
         android:id="@+id/imageButton7"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/imageButton6"
-        app:srcCompat="@drawable/users" />
+        app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
     <ImageButton
         android:id="@+id/imageButton8"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/imageButton7"
-        app:srcCompat="@drawable/movie_add" />
+        app:srcCompat="@android:drawable/ic_menu_add" />
 
     <ScrollView
         android:layout_width="match_parent"
