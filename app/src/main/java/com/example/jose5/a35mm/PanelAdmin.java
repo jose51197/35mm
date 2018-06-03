@@ -1,5 +1,8 @@
 package com.example.jose5.a35mm;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +20,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
+
+import com.example.jose5.a35mm.modelo.Pelicula;
+import com.example.jose5.a35mm.modelo.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PanelAdmin extends AppCompatActivity {
 
@@ -31,9 +43,10 @@ public class PanelAdmin extends AppCompatActivity {
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
+    //aqui guardo los querys
+    ArrayList<User> users=new ArrayList<>();
+    ArrayList<Pelicula> pelis=new ArrayList<>();
+
     private ViewPager mViewPager;
 
     @Override
@@ -131,5 +144,45 @@ public class PanelAdmin extends AppCompatActivity {
             // Show 3 total pages.
             return 3;
         }
+    }
+    private class ListAdapter extends ArrayAdapter<String>{
+        private int layout;
+        public ListAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<String> objects) {
+            super(context, resource, textViewResourceId, objects);
+            layout=resource;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            ViewUser mainViewUser = null;
+            if(convertView==null){
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                convertView = inflater.inflate(layout,parent,false);
+                final ViewUser viewHolder = new ViewUser();
+                viewHolder.email = (TextView) convertView.findViewById(R.id.user_email);
+                viewHolder.user = (TextView) convertView.findViewById(R.id.user_name);
+                viewHolder.ban = (Switch) convertView.findViewById(R.id.user_switch);
+                viewHolder.ban.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        //hacer el ban
+                        viewHolder.ban.isActivated();
+                    }
+                });
+                convertView.setTag(viewHolder);
+            }else{
+                mainViewUser = (ViewUser) convertView.getTag();
+                //poner los atributos
+                //mainViewUser.email
+            }
+
+            return super.getView(position, convertView, parent);
+        }
+    }
+    public class ViewUser{
+        TextView email;
+        TextView user;
+        Switch ban;
     }
 }
