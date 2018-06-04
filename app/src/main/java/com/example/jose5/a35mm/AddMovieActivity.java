@@ -18,7 +18,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.jose5.a35mm.modelo.Genero;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -44,9 +43,9 @@ public class AddMovieActivity extends AppCompatActivity{
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        this.movieDescription = findViewById(R.id.movieDescription);
+        this.movieDescription = findViewById(R.id.movieUserDescription);
         this.movieName = findViewById(R.id.movieName);
-        this.movieImage = findViewById(R.id.movieImage);
+        this.movieImage = findViewById(R.id.movieUserImage);
         this.movieYear = findViewById(R.id.movieYear);
         this.movieDirectors = findViewById(R.id.movieDirectors);
         this.movieActors = findViewById(R.id.movieActors);

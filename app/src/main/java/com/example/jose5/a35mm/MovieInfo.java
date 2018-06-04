@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,9 +49,9 @@ public class MovieInfo extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         movieName = findViewById(R.id.movieName);
-        movieDescription = findViewById(R.id.movieDescription);
+        movieDescription = findViewById(R.id.movieUserDescription);
         movieYear = findViewById(R.id.movieYear);
-        movieImage = findViewById(R.id.movieImage);
+        movieImage = findViewById(R.id.movieUserImage);
         movieGender = findViewById(R.id.movieGender);
         movieDirectors = findViewById(R.id.movieDirectors);
         movieActors = findViewById(R.id.movieActors);
@@ -83,7 +82,6 @@ public class MovieInfo extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
         Button delete = (Button) findViewById(R.id.delete);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +90,7 @@ public class MovieInfo extends AppCompatActivity {
                 del.execute();
             }
         });
+
         Button edit = (Button) findViewById(R.id.edit);
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,9 +100,6 @@ public class MovieInfo extends AppCompatActivity {
                 startActivity(edit);
             }
         });
-
-
-
     }
 
     public Bitmap textAsBitmap(String text, float textSize, int textColor) {
@@ -119,6 +115,7 @@ public class MovieInfo extends AppCompatActivity {
         canvas.drawText(text, 0, baseline, paint);
         return image;
     }
+
     public class MovieTask extends AsyncTask<Void, Void, Boolean> {
 
         private URL url;

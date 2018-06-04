@@ -9,10 +9,7 @@ import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -29,12 +26,10 @@ import java.util.ArrayList;
 
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 
-public class UserActivity extends AppCompatActivity {
+public class RecActivity extends AppCompatActivity {
 
-    private ImageButton recs;
-    private ImageButton logOut;
-    private android.support.v7.widget.GridLayout movies;
-    private android.support.v7.widget.GridLayout movies2;
+    private android.support.v7.widget.GridLayout moviesRecs;
+    private android.support.v7.widget.GridLayout moviesRecs2;
     ArrayList<Integer> allMovies = new ArrayList<>();
     private int index;
     private String user;
@@ -42,18 +37,16 @@ public class UserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_main);
+        setContentView(R.layout.recommendations);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        final Intent intent = getIntent();
-        user = intent.getStringExtra("id");
+        Intent intent = getIntent();
+        user = intent.getStringExtra("userId");
         Log.d("usr", user);
 
-        recs = findViewById(R.id.recommendations);
-        logOut = findViewById(R.id.logOut);
-        movies = findViewById(R.id.moviesUser);
-        movies2 = findViewById(R.id.moviesUser2);
+        moviesRecs = findViewById(R.id.moviesRecs);
+        moviesRecs2 = findViewById(R.id.moviesRecs2);
 
         try {
             getMovies();
@@ -63,27 +56,23 @@ public class UserActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(UserActivity.this, LoginActivity.class));
-            }
-        });
-
-        recs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent1 = new Intent(UserActivity.this, RecActivity.class);
-                intent1.putExtra("userId", user);
-                startActivity(intent1);
-            }
-        });
-
     }
 
     private void getMovies() throws IOException, JSONException {
         Conexion c = new Conexion();
-        final JSONArray movies= c.Query("SELECT * FROM Pelicula");
+        final JSONArray generos = c.Query("SELECT p.genero FROM Comentario c JOIN Pelicula p on " +
+                "p.idPelicula = c.idPelicula WHERE c.idUser= " +user+ " GROUP BY p.genero");
+        String movieGen = "";
+        Log.d("qy", generos.toString());
+        if (generos != null){
+            for (int i=0; i<generos.length(); i++){
+                if (i+1 == generos.length())
+                    movieGen += generos.getJSONObject(i).getString("genero");
+                else
+                    movieGen += generos.getJSONObject(i).getString("genero") + "or ";
+            }
+        }
+        final JSONArray movies = c.Query("SELECT * FROM Pelicula p WHERE p.genero = " + movieGen);
         Log.d("msg", movies.toString());
         int last = 0;
         for (int i=0; i<movies.length()/2; i++){
@@ -98,7 +87,7 @@ public class UserActivity extends AppCompatActivity {
             get.execute();
             index = i+1;
             img.setOnClickListener(new MyOwnListener(index));
-            this.movies.addView(img);
+            this.moviesRecs.addView(img);
             last = i;
         }
         for (int i = last+1; i<movies.length(); i++){
@@ -113,7 +102,7 @@ public class UserActivity extends AppCompatActivity {
             get.execute();
             index = i+1;
             img.setOnClickListener(new MyOwnListener(index));
-            this.movies2.addView(img);
+            this.moviesRecs2.addView(img);
         }
     }
 
@@ -174,7 +163,7 @@ public class UserActivity extends AppCompatActivity {
         @Override
         public void onClick(View v)
         {
-            Intent intent = new Intent(UserActivity.this, UserMovieInfo.class);
+            Intent intent = new Intent(RecActivity.this, UserMovieInfo.class);
             intent.putExtra("id", String.valueOf(allMovies.get(index-1)));
             intent.putExtra("userId", user);
             startActivity(intent);
