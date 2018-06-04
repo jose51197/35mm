@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
+import android.widget.Scroller;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -41,13 +43,11 @@ public class AddMovieActivity extends AppCompatActivity{
 
     private void addMovie(){
         Conexion con = new Conexion();
-        try {
-            con.AddMovie(movieName.getText().toString(),movieDescription.getText().toString(),
-                    movieImage.getText().toString(),movieYear.getText().toString());
+        if (con.Insert("Pelicula", "Nombre,Descripcion,Foto,anhio", movieDescription.getText().toString()+","+
+                movieName.getText().toString()+","+movieImage.getText().toString()+","+ movieYear.getText().toString())){
             startActivity(new Intent(AddMovieActivity.this,AdminMain.class));
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        addMovieButton.setError("No insertado");
     }
 
 }

@@ -39,24 +39,52 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="459dp"
-        android:layout_alignParentBottom="true"
+        android:layout_height="462dp"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="0dp">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="49dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <GridLayout
-                android:id="@+id/movies"
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="457dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true">
+                android:layout_height="match_parent">
 
-            </GridLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.GridLayout
+                        android:id="@+id/movies"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </android.support.v7.widget.GridLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.GridLayout
+                        android:id="@+id/movies2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </android.support.v7.widget.GridLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
         </LinearLayout>
     </ScrollView>
 
