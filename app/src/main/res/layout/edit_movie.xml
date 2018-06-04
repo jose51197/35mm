@@ -1,68 +1,91 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textMovie2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/movieName2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-93dp"
-        android:text="Edit Movie"
-        android:textSize="24sp" />
+    <ScrollView
+        android:layout_width="294dp"
+        android:layout_height="434dp"
+        android:layout_centerInParent="true">
 
-    <EditText
-        android:id="@+id/movieName2"
-        android:layout_width="267dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="93dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/movieDescription2"
-        android:layout_width="267dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="148dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Description" />
+            <TextView
+                android:id="@+id/textMovie"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:text="Edit movie"
+                android:textAlignment="center"
+                android:textSize="24sp" />
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="265dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="206dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Image URL" />
+            <EditText
+                android:id="@+id/emovieName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Name"
+                android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="266dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="202dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Year" />
+            <EditText
+                android:id="@+id/emovieDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Description"
+                android:inputType="textPersonName" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="133dp"
-        android:text="Edit" />
+
+            <EditText
+                android:id="@+id/emovieImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:ems="10"
+                android:hint="Image URL"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/emovieYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Year"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/emovieDirectors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Directors"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/eMovieActors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Actors"
+                android:inputType="textPersonName" />
+
+            <Spinner
+                android:id="@+id/eMovieGender"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:spinnerMode="dialog" />
+
+            <Button
+                android:id="@+id/eaddMovie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:text="Save" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

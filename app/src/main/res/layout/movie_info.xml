@@ -6,15 +6,27 @@
 
     <ScrollView
         android:layout_width="352dp"
-        android:layout_height="267dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="17dp">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/movieImage"
+        android:layout_centerHorizontal="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gender:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/movieGender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/directors"
@@ -42,44 +54,17 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/comment"
-                    android:layout_width="238dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="textPersonName" />
-
-                <Button
-                    android:id="@+id/addComment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="ADD" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView16"
+            <Button
+                android:id="@+id/edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Comments:"
-                android:textSize="18sp" />
+                android:text="Edit" />
 
-            <ScrollView
+            <Button
+                android:id="@+id/delete"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/movieComments"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-            </ScrollView>
+                android:layout_height="wrap_content"
+                android:text="Delete" />
 
         </LinearLayout>
     </ScrollView>
@@ -89,13 +74,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/imageView3"
-        android:layout_marginEnd="134dp"
+        android:layout_alignTop="@+id/movieImage"
+        android:layout_marginEnd="120dp"
         android:text="Movie:"
         android:textSize="18sp" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/movieImage"
         android:layout_width="162dp"
         android:layout_height="214dp"
         android:layout_alignParentStart="true"
@@ -111,15 +96,6 @@
         android:layout_alignStart="@+id/textView5"
         android:layout_marginTop="57dp"
         android:text="Description:"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="118dp"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView5"
-        android:layout_marginStart="11dp"
-        android:layout_toEndOf="@+id/textView5"
         android:textSize="18sp" />
 
     <TextView
@@ -170,13 +146,5 @@
         android:scaleY=".5"
         android:transformPivotX="0dp"
         android:transformPivotY="0dp" />
-
-    <TextView
-        android:id="@+id/textView15"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:textSize="18sp" />
 
 </RelativeLayout>

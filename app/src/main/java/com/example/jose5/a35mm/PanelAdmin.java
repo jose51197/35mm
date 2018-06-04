@@ -1,5 +1,8 @@
 package com.example.jose5.a35mm;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,13 +13,23 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
+
+import com.example.jose5.a35mm.modelo.Pelicula;
+import com.example.jose5.a35mm.modelo.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PanelAdmin extends AppCompatActivity {
 
@@ -30,9 +43,10 @@ public class PanelAdmin extends AppCompatActivity {
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
+    //aqui guardo los querys
+    ArrayList<User> users=new ArrayList<>();
+    ArrayList<Pelicula> pelis=new ArrayList<>();
+
     private ViewPager mViewPager;
 
     @Override
@@ -50,71 +64,55 @@ public class PanelAdmin extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_panel_admin, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public static class addMovie extends Fragment {
+
+        public addMovie() {
         }
 
-        return super.onOptionsItemSelected(item);
+        public static addMovie newInstance() {
+            addMovie fragment = new addMovie();
+            return fragment;
+        }
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.add_movie, container, false);
+            return rootView;
+        }
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
+    public static class userBan extends Fragment {
 
-        public PlaceholderFragment() {
+        public userBan() {
+        }
+        public static userBan newInstance() {
+            userBan fragment = new userBan();
+            return fragment;
+        }
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.users, container, false);
+            return rootView;
+        }
+    }
+
+    public static class editMovie extends Fragment {
+
+        public editMovie() {
         }
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
+        public static editMovie newInstance() {
+            editMovie fragment = new editMovie();
             return fragment;
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_panel_admin, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.edit_movie, container, false);
             return rootView;
         }
     }
@@ -131,9 +129,14 @@ public class PanelAdmin extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            Log.println(Log.DEBUG,"freagment", String.valueOf(position));
+            switch (position){
+                case 0: return addMovie.newInstance();
+                case 1: return userBan.newInstance();
+                case 2: return editMovie.newInstance();
+                default:return addMovie.newInstance();
+            }
+
         }
 
         @Override
@@ -141,5 +144,45 @@ public class PanelAdmin extends AppCompatActivity {
             // Show 3 total pages.
             return 3;
         }
+    }
+    private class ListAdapter extends ArrayAdapter<String>{
+        private int layout;
+        public ListAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<String> objects) {
+            super(context, resource, textViewResourceId, objects);
+            layout=resource;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            ViewUser mainViewUser = null;
+            if(convertView==null){
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                convertView = inflater.inflate(layout,parent,false);
+                final ViewUser viewHolder = new ViewUser();
+                viewHolder.email = (TextView) convertView.findViewById(R.id.user_email);
+                viewHolder.user = (TextView) convertView.findViewById(R.id.user_name);
+                viewHolder.ban = (Switch) convertView.findViewById(R.id.user_switch);
+                viewHolder.ban.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        //hacer el ban
+                        viewHolder.ban.isActivated();
+                    }
+                });
+                convertView.setTag(viewHolder);
+            }else{
+                mainViewUser = (ViewUser) convertView.getTag();
+                //poner los atributos
+                //mainViewUser.email
+            }
+
+            return super.getView(position, convertView, parent);
+        }
+    }
+    public class ViewUser{
+        TextView email;
+        TextView user;
+        Switch ban;
     }
 }

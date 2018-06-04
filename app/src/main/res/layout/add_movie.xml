@@ -1,12 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="294dp"
-        android:layout_height="356dp"
+        android:layout_height="434dp"
         android:layout_centerInParent="true">
 
         <LinearLayout
@@ -23,6 +21,14 @@
                 android:textSize="24sp" />
 
             <EditText
+                android:id="@+id/movieName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Name"
+                android:inputType="textPersonName" />
+
+            <EditText
                 android:id="@+id/movieDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -30,13 +36,6 @@
                 android:hint="Description"
                 android:inputType="textPersonName" />
 
-            <EditText
-                android:id="@+id/movieName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Name"
-                android:inputType="textPersonName" />
 
             <EditText
                 android:id="@+id/movieImage"
@@ -53,7 +52,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:hint="Year"
                 android:inputType="number" />
+
+            <Spinner
+                android:id="@+id/genders"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:addStatesFromChildren="false" />
+
+            <EditText
+                android:id="@+id/movieDirectors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Directors"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/movieActors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Actors"
+                android:inputType="textPersonName" />
 
             <Button
                 android:id="@+id/addMovie"

@@ -80,7 +80,7 @@ public class AdminMain extends AppCompatActivity {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(545, 795);
             img.setImageBitmap(bitmap);
             img.setLayoutParams(layoutParams);
-            index = i;
+            index = i+1;
             img.setOnClickListener(new MyOwnListener(index));
             this.movies.addView(img);
             last = i;
@@ -93,7 +93,7 @@ public class AdminMain extends AppCompatActivity {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(545, 795);
             img.setImageBitmap(bitmap);
             img.setLayoutParams(layoutParams);
-            index = i;
+            index = i+1;
             img.setOnClickListener(new MyOwnListener(index));
             this.movies2.addView(img);
         }
@@ -111,7 +111,9 @@ public class AdminMain extends AppCompatActivity {
         @Override
         public void onClick(View v)
         {
-            Log.d("idPelicula", String.valueOf(allMovies.get(index)));
+            Intent intent = new Intent(AdminMain.this, MovieInfo.class);
+            intent.putExtra("id", String.valueOf(index));
+            startActivity(intent);
         }
     }
 }
