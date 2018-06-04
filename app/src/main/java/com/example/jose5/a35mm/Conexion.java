@@ -24,7 +24,6 @@ public class Conexion {
 
     public JSONArray Query(String query) {
         query = query.replace(" ", "%20");
-        StringBuilder result = new StringBuilder();
         try {
             URL url = new URL("https://proyectoreque.000webhostapp.com/connect/select.php?query=" + query);
             Log.println(Log.DEBUG, "url", url.toString());
@@ -46,7 +45,6 @@ public class Conexion {
     }
 
     public boolean Insert(String table,String columns, String values) {
-        StringBuilder result = new StringBuilder();
         try {
             //digamos que 1,2,3 cambia a '+1+','+2+','+3+'
             values="'"+values.replace(",","','")+"'";
@@ -59,9 +57,27 @@ public class Conexion {
             httpConn.setRequestMethod("GET");
             httpConn.connect();
             InputStream is = httpConn.getInputStream();
-            Log.println(Log.DEBUG,"insert",convertinputStreamToString(is));
             return true;
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean Delete(String table,String where) {
+        try {
+            URL url = new URL("https://proyectoreque.000webhostapp.com/connect/delete.php?table=" + table + "&where="+where);
+            Log.println(Log.DEBUG, "url", url.toString());
+            URLConnection conn = url.openConnection();
+            HttpURLConnection httpConn = (HttpURLConnection) conn;
+            httpConn.setAllowUserInteraction(false);
+            httpConn.setInstanceFollowRedirects(true);
+            httpConn.setRequestMethod("GET");
+            httpConn.connect();
+            InputStream is = httpConn.getInputStream();
+            String result2 = convertinputStreamToString(is);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

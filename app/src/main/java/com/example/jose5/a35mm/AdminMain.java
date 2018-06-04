@@ -116,7 +116,7 @@ public class AdminMain extends AppCompatActivity {
         public void onClick(View v)
         {
             Intent intent = new Intent(AdminMain.this, MovieInfo.class);
-            intent.putExtra("id", String.valueOf(index));
+            intent.putExtra("id", String.valueOf(allMovies.get(index-1)));
             startActivity(intent);
         }
     }
