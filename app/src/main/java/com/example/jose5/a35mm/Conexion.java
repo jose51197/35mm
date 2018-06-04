@@ -36,7 +36,12 @@ public class Conexion {
 
             InputStream is = httpConn.getInputStream();
             queryResult = convertinputStreamToString(is);
-            return new JSONArray(queryResult);
+            try{
+                return new JSONArray(queryResult);
+            }catch (Exception e){
+                return null;
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();

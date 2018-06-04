@@ -49,7 +49,7 @@
                 android:id="@+id/banned"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:spinnerMode="dialog" />
+                android:spinnerMode="dialog"/>
 
             <Button
                 android:id="@+id/unban"

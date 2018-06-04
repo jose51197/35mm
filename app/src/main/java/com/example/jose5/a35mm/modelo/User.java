@@ -6,12 +6,19 @@ package com.example.jose5.a35mm.modelo;
 
 public class User {
     private String Nombre;
-    private int id;
-    private boolean isAdmin=false;
+    private String id;
 
-    public User(String nombre, int id) {
+    public User(String nombre, String id) {
         Nombre = nombre;
         this.id = id;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return Nombre;
+    }
 }
