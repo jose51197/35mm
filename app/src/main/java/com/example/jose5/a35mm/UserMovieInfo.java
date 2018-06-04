@@ -69,6 +69,7 @@ public class UserMovieInfo extends AppCompatActivity {
 
         id = intent.getStringExtra("id");
         Conexion c = new Conexion();
+
         JSONArray movies= c.Query("SELECT p.*, g.Genero FROM Pelicula p JOIN genero g on g.idGenero = p.genero WHERE idPelicula= " + id);
         Log.d("res", movies.toString());
         JSONArray commentaries = c.Query("SELECT c.Comentario, u.User FROM Comentario c JOIN Users u on c.idUser = u.idUser WHERE c.idPelicula= " + id);
@@ -107,6 +108,8 @@ public class UserMovieInfo extends AppCompatActivity {
         c.Insert("Comentario", "idUser, idPelicula, Comentario", user + "," +
                 id+","+comment.getText().toString());
         Intent intent = new Intent(UserMovieInfo.this, UserMovieInfo.class);
+        intent.putExtra("id",id);
+        intent.putExtra("userId",user);
         startActivity(intent);
     }
 }
