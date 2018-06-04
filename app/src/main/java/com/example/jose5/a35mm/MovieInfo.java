@@ -39,6 +39,7 @@ public class MovieInfo extends AppCompatActivity {
     private TextView movieGender;
     private ImageView movieImage;
     private String id;
+    private android.widget.GridLayout comments;
 
 
     protected void onCreate(Bundle savedInstanceState){
@@ -55,10 +56,12 @@ public class MovieInfo extends AppCompatActivity {
         movieGender = findViewById(R.id.movieGender);
         movieDirectors = findViewById(R.id.movieDirectors);
         movieActors = findViewById(R.id.movieActors);
+        comments = findViewById(R.id.amovieComments);
 
         id = intent.getStringExtra("id");
         Conexion c = new Conexion();
         JSONArray movies= c.Query("SELECT p.*, g.Genero FROM Pelicula p JOIN genero g on g.idGenero = p.genero WHERE idPelicula= " + id);
+        JSONArray commentaries = c.Query("SELECT c.Comentario, u.User FROM Comentario c JOIN Users u on c.idUser = u.idUser  WHERE c.idPelicula= " + id);
         Log.d("res", movies.toString());
         try {
             movieName.setText(movies.getJSONObject(0).getString("Nombre"));
@@ -72,6 +75,18 @@ public class MovieInfo extends AppCompatActivity {
             movieDirectors.setText(movies.getJSONObject(0).getString("Directores"));
             movieActors.setText(movies.getJSONObject(0).getString("Actores"));
             movieGender.setText(movies.getJSONObject(0).getString("Genero"));
+
+            if (commentaries != null){
+                TextView e = new TextView(this);
+                String comment="";
+                for (int i=0; i<commentaries.length(); i++){
+
+                    comment+= commentaries.getJSONObject(i).get("User") + ": " + commentaries.getJSONObject(i).get("Comentario")+"\n";
+                }
+                e.setText(comment);
+                comments.addView(e);
+            }
+
             MovieTask get = new MovieTask(imgURL,movieImage);
             get.execute();
         } catch (JSONException e) {
