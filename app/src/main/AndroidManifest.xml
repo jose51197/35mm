@@ -47,6 +47,11 @@
             android:name=".UserActivity"
             android:label="@string/title_activity_user"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".UserMovieInfo"
+            android:label="@string/title_activity_user"
+            android:parentActivityName=".UserActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

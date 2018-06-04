@@ -7,20 +7,21 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.example.jose5.a35mm.modelo.Pelicula;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class MovieInfo extends AppCompatActivity {
+public class UserMovieInfo extends AppCompatActivity {
 
     private TextView movieName;
     private TextView movieDescription;
@@ -29,23 +30,39 @@ public class MovieInfo extends AppCompatActivity {
     private TextView movieActors;
     private TextView movieGender;
     private ImageView movieImage;
+    private String user;
+    private Button addComment;
+    private TextView comment;
+    private String id;
+
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.movie_info);
+        setContentView(R.layout.user_movie_info);
         Intent intent = getIntent();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        movieName = findViewById(R.id.movieName);
-        movieDescription = findViewById(R.id.movieUserDescription);
-        movieYear = findViewById(R.id.movieYear);
-        movieImage = findViewById(R.id.movieUserImage);
-        movieGender = findViewById(R.id.movieGender);
-        movieDirectors = findViewById(R.id.movieDirectors);
-        movieActors = findViewById(R.id.movieActors);
+        user = intent.getStringExtra("user");
 
-        String id = intent.getStringExtra("id");
+        movieName = findViewById(R.id.movieUserName);
+        movieDescription = findViewById(R.id.movieUserDescription);
+        movieYear = findViewById(R.id.movieUserYear);
+        movieImage = findViewById(R.id.movieUserImage);
+        movieGender = findViewById(R.id.movieUserGender);
+        movieDirectors = findViewById(R.id.movieUserDirectors);
+        movieActors = findViewById(R.id.movieUserActors);
+        addComment = findViewById(R.id.addComment);
+        comment = findViewById(R.id.comment);
+
+        addComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addComment();
+            }
+        });;
+
+        id = intent.getStringExtra("id");
         Conexion c = new Conexion();
         JSONArray movies= c.Query("SELECT p.*, g.Genero FROM Pelicula p JOIN genero g on g.idGenero = p.genero WHERE idPelicula= " + id);
         Log.d("res", movies.toString());
@@ -68,6 +85,15 @@ public class MovieInfo extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    private void addComment(){
+        Conexion c = new Conexion();
+        c.Insert("Comentario", "idUser, idPelicula, Comentario", user + "," +
+                id+","+comment.getText().toString());
+        Intent intent = new Intent(UserMovieInfo.this, UserMovieInfo.class);
+        intent.putExtra("id", id);
+        intent.putExtra("user", user);
+        startActivity(intent);
     }
 }

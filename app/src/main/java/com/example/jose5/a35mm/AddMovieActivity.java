@@ -8,14 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ScrollView;
-import android.widget.Scroller;
 import android.widget.Spinner;
-
-import org.json.JSONArray;
-
-import java.io.IOException;
-import java.sql.Connection;
 
 public class AddMovieActivity extends AppCompatActivity{
 
@@ -34,9 +27,9 @@ public class AddMovieActivity extends AppCompatActivity{
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        this.movieDescription = findViewById(R.id.movieDescription);
+        this.movieDescription = findViewById(R.id.movieUserDescription);
         this.movieName = findViewById(R.id.movieName);
-        this.movieImage = findViewById(R.id.movieImage);
+        this.movieImage = findViewById(R.id.movieUserImage);
         this.movieYear = findViewById(R.id.movieYear);
         this.movieDirectors = findViewById(R.id.movieDirectors);
         this.movieActors = findViewById(R.id.movieActors);

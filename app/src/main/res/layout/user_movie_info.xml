@@ -23,7 +23,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/movieGender"
+                android:id="@+id/movieUserGender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp" />
@@ -36,7 +36,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/movieDirectors"
+                android:id="@+id/movieUserDirectors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp" />
@@ -49,22 +49,10 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/movieActors"
+                android:id="@+id/movieUserActors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp" />
-
-            <Button
-                android:id="@+id/edit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Edit" />
-
-            <Button
-                android:id="@+id/delete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Delete" />
 
         </LinearLayout>
     </ScrollView>
@@ -115,7 +103,7 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/movieYear"
+        android:id="@+id/movieUserYear"
         android:layout_width="68dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/movieUserDescription"
@@ -124,7 +112,7 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/movieName"
+        android:id="@+id/movieUserName"
         android:layout_width="111dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -133,7 +121,7 @@
         android:textSize="18sp" />
 
     <RatingBar
-        android:id="@+id/movieRating"
+        android:id="@+id/movieUserRating"
         style="@android:style/Widget.DeviceDefault.RatingBar.Indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -147,4 +135,36 @@
         android:transformPivotX="0dp"
         android:transformPivotY="0dp" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <EditText
+        android:id="@+id/comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/movieUserImage"
+        android:layout_marginBottom="69dp"
+        android:ems="10"
+        android:hint="Comment"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/addComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/comment"
+        android:layout_marginEnd="55dp"
+        android:text="ADD" />
 </RelativeLayout>
