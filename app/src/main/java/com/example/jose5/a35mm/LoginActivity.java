@@ -338,7 +338,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 isAdmin=true;
                 if(admin!=null){
                     Log.println(Log.DEBUG,"q",String.valueOf(admin.length()));
-                    startActivity(new Intent(LoginActivity.this,AdminMain.class));
+                    return true;
                 }
             }
             return false;
@@ -353,9 +353,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 finish();
                 notificate("Sesion iniciada");
                 if(isAdmin){
-                    startActivity(new Intent(LoginActivity.this,PanelAdmin.class));
+                    startActivity(new Intent(LoginActivity.this,AdminMain.class));
                 }else{
-                    //fabri aqui abre peliculas
+                    Intent user = new Intent(LoginActivity.this,UserActivity.class);
+                    user.putExtra("id",mEmail);
+                    startActivity(user);
                 }
 
             } else {
