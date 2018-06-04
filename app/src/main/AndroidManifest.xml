@@ -54,7 +54,8 @@
             android:parentActivityName=".UserActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".AdminPanel" />
-        <activity android:name=".BanActivity"></activity>
+        <activity android:name=".BanActivity" />
+        <activity android:name=".EditActivity"></activity>
     </application>
 
 </manifest>

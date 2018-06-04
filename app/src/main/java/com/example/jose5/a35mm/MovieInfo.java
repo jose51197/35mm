@@ -90,6 +90,16 @@ public class MovieInfo extends AppCompatActivity {
                 del.execute();
             }
         });
+
+        Button edit = (Button) findViewById(R.id.edit);
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent edit =new Intent(MovieInfo.this,EditActivity.class);
+                edit.putExtra("id",id);
+                startActivity(edit);
+            }
+        });
     }
 
     public Bitmap textAsBitmap(String text, float textSize, int textColor) {
