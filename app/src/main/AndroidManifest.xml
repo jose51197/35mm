@@ -44,7 +44,8 @@
             android:label="@string/title_activity_user"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AdminPanel" />
-        <activity android:name=".BanActivity"></activity>
+        <activity android:name=".BanActivity" />
+        <activity android:name=".EditActivity"></activity>
     </application>
 
 </manifest>
