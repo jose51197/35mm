@@ -86,12 +86,14 @@ public class UserMovieInfo extends AppCompatActivity {
             movieActors.setText(movies.getJSONObject(0).getString("Actores"));
             movieGender.setText(movies.getJSONObject(0).getString("Genero"));
             if (commentaries != null){
+                TextView e = new TextView(this);
+                String comment="";
                 for (int i=0; i<commentaries.length(); i++){
-                    TextView e = new TextView(this);
-                    String comment = commentaries.getJSONObject(i).get("User") + ": " + commentaries.getJSONObject(i).get("Comentario");
-                    e.setText(comment);
-                    comments.addView(e);
+
+                    comment+= commentaries.getJSONObject(i).get("User") + ": " + commentaries.getJSONObject(i).get("Comentario")+"\n";
                 }
+                e.setText(comment);
+                comments.addView(e);
             }
         } catch (JSONException e) {
             e.printStackTrace();
