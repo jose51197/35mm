@@ -59,7 +59,7 @@ public class EditActivity extends AppCompatActivity {
 
     private void addMovie(){
         Conexion con = new Conexion();
-        if (con.Delete("Pelicula","idPelicula="+id) && con.Insert("Pelicula", "Descripcion,Nombre,Foto,anhio,Actores,Directores,genero", movieDescription.getText().toString()+","+
+        if (con.Delete("Pelicula","idPelicula="+id) && con.Insert("Pelicula", "idPelicula,Descripcion,Nombre,Foto,anhio,Actores,Directores,genero", id+movieDescription.getText().toString()+","+
                 movieName.getText().toString()+","+movieImage.getText().toString()+","+ movieYear.getText().toString()
                 +","+ movieActors.getText().toString()+","+ movieDirectors.getText().toString()+","+((Genero)genders.getSelectedItem()).getId())){
             startActivity(new Intent(EditActivity.this,AdminMain.class));
