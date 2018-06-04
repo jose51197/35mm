@@ -15,6 +15,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,7 +73,7 @@ public class UserMovieInfo extends AppCompatActivity {
 
         JSONArray movies= c.Query("SELECT p.*, g.Genero FROM Pelicula p JOIN genero g on g.idGenero = p.genero WHERE idPelicula= " + id);
         Log.d("res", movies.toString());
-        JSONArray commentaries = c.Query("SELECT c.Comentario, u.User FROM Comentario c JOIN Users u on c.idUser = u.idUser WHERE c.idPelicula= " + id);
+        JSONArray commentaries = c.Query("SELECT c.Comentario, u.User FROM Comentario c JOIN Users u on c.idUser = u.idUser  WHERE c.idPelicula= " + id);
         try {
             movieName.setText(movies.getJSONObject(0).getString("Nombre"));
             movieDescription.setText(movies.getJSONObject(0).getString("Descripcion"));
@@ -106,12 +107,22 @@ public class UserMovieInfo extends AppCompatActivity {
 
     private void addComment(){
         Log.d("usr", user);
+
         Conexion c = new Conexion();
-        c.Insert("Comentario", "idUser, idPelicula, Comentario", user + "," +
-                id+","+comment.getText().toString());
-        Intent intent = new Intent(UserMovieInfo.this, UserMovieInfo.class);
-        intent.putExtra("id",id);
-        intent.putExtra("userId",user);
-        startActivity(intent);
+        if(c.Query("Select * from Banned where idUser ="+user)==null){
+            c.Insert("Comentario", "idUser, idPelicula, Comentario", user + "," +
+                    id+","+comment.getText().toString());
+            Intent intent = new Intent(UserMovieInfo.this, UserMovieInfo.class);
+            intent.putExtra("id",id);
+            intent.putExtra("userId",user);
+            startActivity(intent);
+        }else{
+            notificate("Usted esta baneado");
+        }
+
+
+    }
+    private void notificate(String notification){
+        Toast.makeText(getApplicationContext(), notification, Toast.LENGTH_LONG).show();
     }
 }
