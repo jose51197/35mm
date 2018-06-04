@@ -3,6 +3,10 @@ package com.example.jose5.a35mm;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
@@ -19,11 +23,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.example.jose5.a35mm.modelo.Pelicula;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
@@ -33,9 +39,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import static android.graphics.Paint.ANTI_ALIAS_FLAG;
+
 public class AdminMain extends AppCompatActivity {
 
-    private ImageButton addMovie;
     private android.support.v7.widget.GridLayout movies;
     private android.support.v7.widget.GridLayout movies2;
     ArrayList<Integer> allMovies = new ArrayList<>();
@@ -47,7 +54,6 @@ public class AdminMain extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        this.addMovie = findViewById(R.id.imageButton8);
         this.movies = findViewById(R.id.movies);
         this.movies2 = findViewById(R.id.movies2);
 
@@ -59,12 +65,6 @@ public class AdminMain extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        addMovie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AdminMain.this,AddMovieActivity.class));
-            }
-        });
     }
 
     private void getMovies() throws IOException, JSONException {
@@ -75,11 +75,13 @@ public class AdminMain extends AppCompatActivity {
         for (int i=0; i<movies.length()/2; i++){
             allMovies.add(movies.getJSONObject(i).getInt("idPelicula"));
             URL imgURL = new URL(movies.getJSONObject(i).getString("Foto"));
-            Bitmap bitmap = BitmapFactory.decodeStream(imgURL.openConnection().getInputStream());
+            Bitmap bitmap = textAsBitmap(movies.getJSONObject(i).getString("Nombre"),1000, Color.BLACK);
             ImageView img = new ImageView(this);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(545, 795);
             img.setImageBitmap(bitmap);
             img.setLayoutParams(layoutParams);
+            MovieTask get = new MovieTask(imgURL,img);
+            get.execute();
             index = i+1;
             img.setOnClickListener(new MyOwnListener(index));
             this.movies.addView(img);
@@ -88,11 +90,13 @@ public class AdminMain extends AppCompatActivity {
         for (int i = last+1; i<movies.length(); i++){
             allMovies.add(movies.getJSONObject(i).getInt("idPelicula"));
             URL imgURL = new URL(movies.getJSONObject(i).getString("Foto"));
-            Bitmap bitmap = BitmapFactory.decodeStream(imgURL.openConnection().getInputStream());
-            final ImageView img = new ImageView(this);
+            Bitmap bitmap = textAsBitmap(movies.getJSONObject(i).getString("Nombre"),1000, Color.BLACK);
+            ImageView img = new ImageView(this);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(545, 795);
             img.setImageBitmap(bitmap);
             img.setLayoutParams(layoutParams);
+            MovieTask get = new MovieTask(imgURL,img);
+            get.execute();
             index = i+1;
             img.setOnClickListener(new MyOwnListener(index));
             this.movies2.addView(img);
@@ -115,5 +119,64 @@ public class AdminMain extends AppCompatActivity {
             intent.putExtra("id", String.valueOf(index));
             startActivity(intent);
         }
+    }
+
+    public class MovieTask extends AsyncTask<Void, Void, Boolean> {
+
+        private URL url;
+        private ImageView view;
+
+        MovieTask(URL url,ImageView view) {
+            this.url=url;
+            this.view=view;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try{
+                final Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        view.setImageBitmap(bitmap);
+
+                    }
+                });
+
+                return true;
+            }catch(Exception e){
+                e.printStackTrace();
+                return false;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if (success) {
+            } else {
+                notificate("Error bajando imagen");
+            }
+        }
+
+        private void notificate(String notification){
+            Toast.makeText(getApplicationContext(), notification, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public Bitmap textAsBitmap(String text, float textSize, int textColor) {
+        Paint paint = new Paint(ANTI_ALIAS_FLAG);
+        paint.setTextSize(textSize);
+        paint.setColor(textColor);
+        paint.setTextAlign(Paint.Align.LEFT);
+        float baseline = -paint.ascent(); // ascent() is negative
+        int width = (int) (paint.measureText(text) + 0.5f); // round
+        int height = (int) (baseline + paint.descent() + 0.5f);
+        Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(image);
+        canvas.drawText(text, 0, baseline, paint);
+        return image;
     }
 }
