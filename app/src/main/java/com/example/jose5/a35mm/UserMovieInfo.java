@@ -6,9 +6,12 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,7 +37,7 @@ public class UserMovieInfo extends AppCompatActivity {
     private Button addComment;
     private TextView comment;
     private String id;
-
+    private android.widget.GridLayout comments;
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -43,7 +46,8 @@ public class UserMovieInfo extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        user = intent.getStringExtra("user");
+        user = intent.getStringExtra("userId");
+        Log.d("info", user);
 
         movieName = findViewById(R.id.movieUserName);
         movieDescription = findViewById(R.id.movieUserDescription);
@@ -54,6 +58,7 @@ public class UserMovieInfo extends AppCompatActivity {
         movieActors = findViewById(R.id.movieUserActors);
         addComment = findViewById(R.id.addComment);
         comment = findViewById(R.id.comment);
+        comments = findViewById(R.id.movieComments);
 
         addComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +71,7 @@ public class UserMovieInfo extends AppCompatActivity {
         Conexion c = new Conexion();
         JSONArray movies= c.Query("SELECT p.*, g.Genero FROM Pelicula p JOIN genero g on g.idGenero = p.genero WHERE idPelicula= " + id);
         Log.d("res", movies.toString());
+        JSONArray commentaries = c.Query("SELECT c.Comentario, u.User FROM Comentario c JOIN Users u on c.idUser = u.idUser WHERE c.idPelicula= " + id);
         try {
             movieName.setText(movies.getJSONObject(0).getString("Nombre"));
             movieDescription.setText(movies.getJSONObject(0).getString("Descripcion"));
@@ -78,6 +84,14 @@ public class UserMovieInfo extends AppCompatActivity {
             movieDirectors.setText(movies.getJSONObject(0).getString("Directores"));
             movieActors.setText(movies.getJSONObject(0).getString("Actores"));
             movieGender.setText(movies.getJSONObject(0).getString("Genero"));
+            if (commentaries != null){
+                for (int i=0; i<commentaries.length(); i++){
+                    TextView e = new TextView(this);
+                    String comment = commentaries.getJSONObject(i).get("User") + ": " + commentaries.getJSONObject(i).get("Comentario");
+                    e.setText(comment);
+                    comments.addView(e);
+                }
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
@@ -88,12 +102,11 @@ public class UserMovieInfo extends AppCompatActivity {
     }
 
     private void addComment(){
+        Log.d("usr", user);
         Conexion c = new Conexion();
         c.Insert("Comentario", "idUser, idPelicula, Comentario", user + "," +
                 id+","+comment.getText().toString());
         Intent intent = new Intent(UserMovieInfo.this, UserMovieInfo.class);
-        intent.putExtra("id", id);
-        intent.putExtra("user", user);
         startActivity(intent);
     }
 }

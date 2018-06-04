@@ -353,7 +353,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 finish();
                 notificate("Sesion iniciada");
                 if(isAdmin){
-                    startActivity(new Intent(LoginActivity.this,AdminMain.class));
+                    startActivity(new Intent(LoginActivity.this,AdminPanel.class));
                 }else{
                     Intent user = new Intent(LoginActivity.this,UserActivity.class);
                     user.putExtra("id",mEmail);
