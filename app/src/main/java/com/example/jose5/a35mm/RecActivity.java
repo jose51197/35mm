@@ -9,53 +9,44 @@ import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.text.LoginFilter;
 import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.GridLayout;
-import android.widget.GridView;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Toast;
-
-import com.example.jose5.a35mm.modelo.Pelicula;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 
-public class AdminMain extends AppCompatActivity {
+public class RecActivity extends AppCompatActivity {
 
-    private android.support.v7.widget.GridLayout movies;
-    private android.support.v7.widget.GridLayout movies2;
+    private android.support.v7.widget.GridLayout moviesRecs;
+    private android.support.v7.widget.GridLayout moviesRecs2;
     ArrayList<Integer> allMovies = new ArrayList<>();
     private int index;
+    private String user;
 
-    protected void onCreate(Bundle savedInstanceState){
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.adm_main);
+        setContentView(R.layout.recommendations);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        this.movies = findViewById(R.id.movies);
-        this.movies2 = findViewById(R.id.movies2);
+        Intent intent = getIntent();
+        user = intent.getStringExtra("userId");
+        Log.d("usr", user);
+
+        moviesRecs = findViewById(R.id.moviesRecs);
+        moviesRecs2 = findViewById(R.id.moviesRecs2);
 
         try {
             getMovies();
@@ -69,7 +60,19 @@ public class AdminMain extends AppCompatActivity {
 
     private void getMovies() throws IOException, JSONException {
         Conexion c = new Conexion();
-        final JSONArray movies= c.Query("SELECT * FROM Pelicula");
+        final JSONArray generos = c.Query("SELECT p.genero FROM Comentario c JOIN Pelicula p on " +
+                "p.idPelicula = c.idPelicula WHERE c.idUser= " +user+ " GROUP BY p.genero");
+        String movieGen = "";
+        Log.d("qy", generos.toString());
+        if (generos != null){
+            for (int i=0; i<generos.length(); i++){
+                if (i+1 == generos.length())
+                    movieGen += generos.getJSONObject(i).getString("genero");
+                else
+                    movieGen += generos.getJSONObject(i).getString("genero") + "or ";
+            }
+        }
+        final JSONArray movies = c.Query("SELECT * FROM Pelicula p WHERE p.genero = " + movieGen);
         Log.d("msg", movies.toString());
         int last = 0;
         for (int i=0; i<movies.length()/2; i++){
@@ -84,7 +87,7 @@ public class AdminMain extends AppCompatActivity {
             get.execute();
             index = i+1;
             img.setOnClickListener(new MyOwnListener(index));
-            this.movies.addView(img);
+            this.moviesRecs.addView(img);
             last = i;
         }
         for (int i = last+1; i<movies.length(); i++){
@@ -99,25 +102,7 @@ public class AdminMain extends AppCompatActivity {
             get.execute();
             index = i+1;
             img.setOnClickListener(new MyOwnListener(index));
-            this.movies2.addView(img);
-        }
-    }
-
-    public class MyOwnListener implements View.OnClickListener
-    {
-        // ...
-        int index;
-
-        public MyOwnListener(int index) {
-            this.index = index;
-        }
-
-        @Override
-        public void onClick(View v)
-        {
-            Intent intent = new Intent(AdminMain.this, MovieInfo.class);
-            intent.putExtra("id", String.valueOf(allMovies.get(index-1)));
-            startActivity(intent);
+            this.moviesRecs2.addView(img);
         }
     }
 
@@ -166,6 +151,25 @@ public class AdminMain extends AppCompatActivity {
         }
     }
 
+    public class MyOwnListener implements View.OnClickListener
+    {
+        // ...
+        int index;
+
+        public MyOwnListener(int index) {
+            this.index = index;
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            Intent intent = new Intent(RecActivity.this, UserMovieInfo.class);
+            intent.putExtra("id", String.valueOf(allMovies.get(index-1)));
+            intent.putExtra("userId", user);
+            startActivity(intent);
+        }
+    }
+
     public Bitmap textAsBitmap(String text, float textSize, int textColor) {
         Paint paint = new Paint(ANTI_ALIAS_FLAG);
         paint.setTextSize(textSize);
@@ -179,4 +183,5 @@ public class AdminMain extends AppCompatActivity {
         canvas.drawText(text, 0, baseline, paint);
         return image;
     }
+
 }

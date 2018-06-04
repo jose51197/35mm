@@ -46,7 +46,7 @@ public class UserActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         user = intent.getStringExtra("id");
         Log.d("usr", user);
 
@@ -67,6 +67,15 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(UserActivity.this, LoginActivity.class));
+            }
+        });
+
+        recs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(UserActivity.this, RecActivity.class);
+                intent1.putExtra("userId", user);
+                startActivity(intent1);
             }
         });
 
