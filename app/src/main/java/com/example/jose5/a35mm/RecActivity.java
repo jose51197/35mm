@@ -63,47 +63,50 @@ public class RecActivity extends AppCompatActivity {
         final JSONArray generos = c.Query("SELECT p.genero FROM Comentario c JOIN Pelicula p on " +
                 "p.idPelicula = c.idPelicula WHERE c.idUser= " +user+ " GROUP BY p.genero");
         String movieGen = "";
-        Log.d("qy", generos.toString());
         if (generos != null){
+            Log.d("qy", generos.toString());
             for (int i=0; i<generos.length(); i++){
                 if (i+1 == generos.length())
-                    movieGen += generos.getJSONObject(i).getString("genero");
+                    movieGen += "p.genero=" +generos.getJSONObject(i).getString("genero");
                 else
-                    movieGen += generos.getJSONObject(i).getString("genero") + "or ";
+                    movieGen += "p.genero=" + generos.getJSONObject(i).getString("genero") + " or ";
             }
         }
-        final JSONArray movies = c.Query("SELECT * FROM Pelicula p WHERE p.genero = " + movieGen);
-        Log.d("msg", movies.toString());
-        int last = 0;
-        for (int i=0; i<movies.length()/2; i++){
-            allMovies.add(movies.getJSONObject(i).getInt("idPelicula"));
-            URL imgURL = new URL(movies.getJSONObject(i).getString("Foto"));
-            Bitmap bitmap = textAsBitmap(movies.getJSONObject(i).getString("Nombre"),1000, Color.BLACK);
-            ImageView img = new ImageView(this);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(545, 795);
-            img.setImageBitmap(bitmap);
-            img.setLayoutParams(layoutParams);
-            MovieTask get = new MovieTask(imgURL,img);
-            get.execute();
-            index = i+1;
-            img.setOnClickListener(new MyOwnListener(index));
-            this.moviesRecs.addView(img);
-            last = i;
+        final JSONArray movies = c.Query("SELECT * FROM Pelicula p WHERE "+ movieGen);
+        if(movies!=null){
+            Log.d("msg", movies.toString());
+            int last = 0;
+            for (int i=0; i<movies.length()/2; i++){
+                allMovies.add(movies.getJSONObject(i).getInt("idPelicula"));
+                URL imgURL = new URL(movies.getJSONObject(i).getString("Foto"));
+                Bitmap bitmap = textAsBitmap(movies.getJSONObject(i).getString("Nombre"),1000, Color.BLACK);
+                ImageView img = new ImageView(this);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(545, 795);
+                img.setImageBitmap(bitmap);
+                img.setLayoutParams(layoutParams);
+                MovieTask get = new MovieTask(imgURL,img);
+                get.execute();
+                index = i+1;
+                img.setOnClickListener(new MyOwnListener(index));
+                this.moviesRecs.addView(img);
+                last = i;
+            }
+            for (int i = last+1; i<movies.length(); i++){
+                allMovies.add(movies.getJSONObject(i).getInt("idPelicula"));
+                URL imgURL = new URL(movies.getJSONObject(i).getString("Foto"));
+                Bitmap bitmap = textAsBitmap(movies.getJSONObject(i).getString("Nombre"),1000, Color.BLACK);
+                ImageView img = new ImageView(this);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(545, 795);
+                img.setImageBitmap(bitmap);
+                img.setLayoutParams(layoutParams);
+                MovieTask get = new MovieTask(imgURL,img);
+                get.execute();
+                index = i+1;
+                img.setOnClickListener(new MyOwnListener(index));
+                this.moviesRecs2.addView(img);
+            }
         }
-        for (int i = last+1; i<movies.length(); i++){
-            allMovies.add(movies.getJSONObject(i).getInt("idPelicula"));
-            URL imgURL = new URL(movies.getJSONObject(i).getString("Foto"));
-            Bitmap bitmap = textAsBitmap(movies.getJSONObject(i).getString("Nombre"),1000, Color.BLACK);
-            ImageView img = new ImageView(this);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(545, 795);
-            img.setImageBitmap(bitmap);
-            img.setLayoutParams(layoutParams);
-            MovieTask get = new MovieTask(imgURL,img);
-            get.execute();
-            index = i+1;
-            img.setOnClickListener(new MyOwnListener(index));
-            this.moviesRecs2.addView(img);
-        }
+
     }
 
     public class MovieTask extends AsyncTask<Void, Void, Boolean> {
